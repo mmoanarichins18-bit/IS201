@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Number Guessing Game</title>
+  <style>
+    body{font-family: Arial, sans-serif;background:#f7fbfc;color:#042a33;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .game{background:#fff;padding:2rem;border-radius:8px;box-shadow:0 6px 24px rgba(2,10,12,.08);width:320px;text-align:center}
+    input{padding:.5rem;width:60%;margin-right:.5rem}
+    button{padding:.5rem 0.75rem}
+    p.msg{min-height:1.5rem}
+  </style>
+</head>
+<body>
+  <div class="game">
+    <h2>Guess the Number</h2>
+    <p>I picked a number between 1 and 50. You have 6 tries.</p>
+    <div>
+      <input id="guess" type="number" min="1" max="50" />
+      <button id="try">Try</button>
+    </div>
+    <p class="msg" id="msg"></p>
+    <p>Attempts: <span id="attempts">0</span>/6</p>
+    <p><button id="reset">Reset</button></p>
+    <p><a href="scratch.html">Back to scratch page</a></p>
+  </div>
+
+  <script>
+    let target = Math.floor(Math.random()*50)+1;
+    let tries = 0;
+    const maxTries=6;
+    const msg=document.getElementById('msg');
+    const attempts=document.getElementById('attempts');
+    document.getElementById('try').addEventListener('click',()=>{
+      const g = Number(document.getElementById('guess').value);
+      if(!g || g<1 || g>50){msg.textContent='Enter a number 1–50';return}
+      tries++;
+      attempts.textContent=tries;
+      if(g===target){msg.textContent='Correct! Well done.';endGame()}
+      else if(tries>=maxTries){msg.textContent='Out of tries. The number was '+target;endGame()}
+      else if(g<target) msg.textContent='Too low — try a higher number.';
+      else msg.textContent='Too high — try a lower number.';
+    });
+    function endGame(){document.getElementById('try').disabled=true}
+    document.getElementById('reset').addEventListener('click',()=>{target=Math.floor(Math.random()*50)+1;tries=0;attempts.textContent=0;msg.textContent='';document.getElementById('try').disabled=false;document.getElementById('guess').value=''});
+  </script>
+</body>
+</html>
